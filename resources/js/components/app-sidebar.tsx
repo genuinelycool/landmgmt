@@ -1,5 +1,13 @@
-import { Link } from "@inertiajs/react";
-import { BookOpen, FolderGit2, LayoutGrid } from "lucide-react";
+import { Link, usePage } from "@inertiajs/react";
+import {
+    BookOpen,
+    Calendar,
+    FolderGit2,
+    LayoutGrid,
+    ScanLine,
+    Ticket,
+    Users,
+} from "lucide-react";
 import AppLogo from "@/components/app-logo";
 import { NavFooter } from "@/components/nav-footer";
 import { NavMain } from "@/components/nav-main";
@@ -38,6 +46,47 @@ const footerNavItems: NavItem[] = [
 ];
 
 export function AppSidebar() {
+    const { auth } = usePage<SharedData>().props;
+    const isAdmin = auth.user?.role === "admin";
+
+    const mainNavItems: NavItem[] = [
+        {
+            title: "Dashboard",
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        ...(isAdmin
+            ? [
+                  {
+                      title: "Users",
+                      href: "/admin/users",
+                      icon: Users,
+                  },
+                  {
+                      title: "Events",
+                      href: "/admin/events",
+                      icon: Calendar,
+                  },
+                  {
+                      title: "Scanner",
+                      href: "/admin/scanner",
+                      icon: ScanLine,
+                  },
+              ]
+            : [
+                //   {
+                //       title: "My Tickets",
+                //       href: "/admin/tickets",
+                //       icon: Ticket,
+                //   },
+                  {
+                      title: "Land Calculator",
+                      href: "/land-calculator",
+                      icon: Ticket,
+                  },
+              ]),
+    ];
+
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
